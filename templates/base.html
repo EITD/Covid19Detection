@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+{% extends "bootstrap/base.html" %}
+<html {% block html_attribs %} lang="en" {% endblock html_attribs %}>
+{%- block html %}
+    <head>
+        {%- block head %}
+            <title>{% block title %}Covid19 Detection{% endblock title %}</title>
+            {%- block metas %}
+                <meta charset="UTF-8">
+                <!-- mobile responsive meta -->
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+            {%- endblock metas %}
+            {% block styles %}
+                {{ super() }}
+                <!-- FancyBox -->
+                <link rel="stylesheet" href="{{ url_for('static', filename='/plugins/fancybox/jquery.fancybox.min.css') }}">
+                <!-- Stylesheets -->
+                <link href="{{ url_for('static', filename='/css/style.css') }}" rel="stylesheet">
+            {%- endblock styles %}
+        {%- endblock head %}
+    </head>
+<body{% block body_attribs %}{% endblock body_attribs %}>
+{% block body -%}
+    {% block content %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            {% if category in ["success","danger"] %}
+            <div class="alert alert-{{ category }}">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                {{ message }}
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <div class="page-wrapper">
+                <!--Header Upper-->
+                <section class="header-uper">
+                    <div class="container clearfix">
+                        <div class="logo">
+                            <figure>
+                                <img src="{{ url_for('static', filename='/images/logo.png') }}" width="190">
+                            </figure>
+                        </div>
+                        <div class="right-side">
+                            <ul class="contact-info">
+                                <li class="item">
+                                    <div class="icon-box">
+                                        <i class="fa fa-envelope-o"></i>
+                                    </div>
+                                    <strong>Email</strong>
+                                    <br>
+                                    <span>2416623294@qq.com</span>
+                                </li>
+                                <li class="item">
+                                    <div class="icon-box">
+                                        <i class="fa fa-phone"></i>
+                                    </div>
+                                    <strong>Phone</strong>
+                                    <br>
+                                    <span>15618942365</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                <!--Header Upper-->
+                <!--Main Header-->
+                <nav class="navbar navbar-default">
+                <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                    </div>
+                </div>
+                </nav>
+                <!--=================================
+                =            Page Slider            =
+                ==================================-->
+                <div class="hero-slider">
+                    <!-- Slider Item -->
+                    <div class="slider-item slide1" style="background-image:url({{ url_for('static', filename='/images/slider/slider-bg-1.jpg') }})">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <!-- Slide Content Start -->
+                                    <div class="content style text-center">
+                                        <div>
+                                            <h2 class="text-white text-bold mb-2">Result:</h2>
+                                            {% if predvalue %}
+                                                <h2 class="text-white text-bold mb-2">{{predvalue}}</h2>
+                                            {% endif %}
+                                        </div>
+                                        <p class="tag-text mb-5">This website will help you find whether you are infected with Covid19 or other diseases<br>
+                                            Please select an X-Ray photo</p>
+    {#                                    <a href="#" class="btn btn-main btn-white">explore</a>#}
+                                        <form action="" method="post" enctype="multipart/form-data">
+                                            <input id="lefile" type="file" style="display:none" name="selectfile">
+                                            <div class="input-append form-inline">
+                                                <a class="btn btn-main btn-white" onclick="change()">Browse</a>
+                                                <button type="submit" class="btn btn-main btn-white">Submit</button>
+                                            </div>
+                                            <!--          <input type="file" name="selectfile">-->
+                                            <!--          <button type="submit" >上传</button>-->
+                                        </form>
+                                    </div>
+                                    <!-- Slide Content End -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====  End of Page Slider  ====-->
+                {% if imagename %}
+                <section class="team-section section">
+                <div class="container">
+                <div class="team-members tab-pane fade in active row" id="doctor">
+{#                <div class="col-md-4 col-sm-6">#}
+                    <div class="team-person text-center">
+                        <img src="{{ url_for('static',filename='uploads/'+imagename) }}" class="img-responsive">
+                        {% if predvalue %}
+                        <h6>{{ predvalue }}</h6>
+                        {% endif %}
+                    </div>
+{#                </div>#}
+                </div>
+                </div>
+                </section>
+                {% endif %}
+
+                <section class="team-section section">
+                <div class="container">
+                    <div class="section-title text-center">
+                        <h3>Lung's X-Ray
+                            <span>Examples</span>
+                        </h3>
+                        <p>These are examples of different kinds of lung health conditions, and the
+                            <br>result presented above is selected from the followings.</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="team-member">
+                                <img src="{{ url_for('static',filename='images/COVID-19.jpg') }}" class="img-responsive">
+                                <div class="contents text-center">
+                                    <h4>COVID-19</h4>
+                                    <p>Coronavirus disease 2019 (COVID-19) is a contagious disease caused by SARS-CoV-2.</p>
+                                    <a href="https://en.jinzhao.wiki/wiki/COVID-19" class="btn btn-main">read more</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="team-member">
+                                <img src="{{ url_for('static',filename='images/Normal.jpg') }}" class="img-responsive">
+                                <div class="contents text-center">
+                                    <h4>Normal</h4>
+                                    <p>Your lungs aren't infected with diseases showed in this website and look healthy.</p>
+                                    <a href="https://en.jinzhao.wiki/wiki/Lung" class="btn btn-main">read more</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="team-member">
+                                <img src="{{ url_for('static',filename='images/Pneumonia-Bacterial.jpg') }}" class="img-responsive">
+                                <div class="contents text-center">
+                                    <h4>Pneumonia-Bacterial</h4>
+                                    <p>Bacterial pneumonia is a type of pneumonia caused by bacterial infection.</p>
+                                    <a href="https://en.jinzhao.wiki/wiki/Bacterial_pneumonia" class="btn btn-main">read more</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="team-member">
+                                <img src="{{ url_for('static',filename='images/Pneumonia-Viral.jpg') }}" class="img-responsive">
+                                <div class="contents text-center">
+                                    <h4>Pneumonia-Viral</h4>
+                                    <p>Pneumonia is an infection that causes inflammation in one or both of the lungs.</p>
+                                    <a href="https://en.jinzhao.wiki/wiki/Viral_pneumonia" class="btn btn-main">read more</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </section>
+    {%- endblock content %}
+
+    {% block scripts %}
+        {{ super() }}
+        <script type="text/javascript">
+            function change() {
+                $("#lefile").click();
+            }
+        </script>
+        <script src="{{ url_for('static',filename='/plugins/jquery.js') }}"></script>
+        <script src="{{ url_for('static',filename='/plugins/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='/plugins/bootstrap-select.min.js') }}"></script>
+        <!-- FancyBox -->
+        <script src="{{ url_for('static',filename='/plugins/fancybox/jquery.fancybox.min.js') }}"></script>
+        <!-- Google Map -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+        <script src="{{ url_for('static',filename='/plugins/google-map/gmap.js') }}"></script>
+        <script src="{{ url_for('static',filename='/plugins/validate.js') }}"></script>
+        <script src="{{ url_for('static',filename='/plugins/wow.js') }}"></script>
+        <script src="{{ url_for('static',filename='/plugins/jquery-ui.js') }}"></script>
+        <script src="{{ url_for('static',filename='/plugins/timePicker.js') }}"></script>
+        <script src="{{ url_for('static',filename='/js/script.js') }}"></script>
+    {%- endblock scripts %}
+{%- endblock body %}
+</body>
+{%- endblock html %}
+</html>
+

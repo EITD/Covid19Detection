@@ -1,0 +1,4 @@
+covid 19
+normal
+pneumonia bacterial
+pneumonia viral
